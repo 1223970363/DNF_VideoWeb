@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bjf.shop.dao.UserDMLDao">
+    <!--添加账号-->
+    <insert id="insertUser" parameterType="com.bjf.shop.entity.DnfUser">
+        insert into dnf_user values(#{dnfId},#{dnfUsername},#{dnfPwd},#{dnfEmail},#{dnfPhone},#{dnfQQnumer},'正常');
+    </insert>
+    <!--查询账号(登录)-->
+    <select id="selectUser" resultType="Map">
+        select * from dnf_user where DNF_username=#{dnfUsername} and DNF_pwd=#{dnfPwd}
+    </select>
+</mapper>

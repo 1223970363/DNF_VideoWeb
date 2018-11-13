@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bjf.shop.dao.MovieDMLDao">
+    <!--初始化查询-->
+    <select id="selectStart" resultType="map">
+        select count(*)NDF_startnum from dnf_movielabe,dnf_movie where dnf_movielabe.DNF_movielabeid=dnf_movie.DNF_movielabeid GROUP BY dnf_movie.DNF_movielabeid
+    </select>
+
+    <!--初始化跳转链接-->
+    <select id="selectLink" resultType="map">
+        select * from dnf_movie where DNF_movielabeid=9
+    </select>
+
+    <!--分页查询-->
+    <select id="selectMovie" resultType="map">
+        select * from dnf_movielabe,dnf_movie where dnf_movielabe.DNF_movielabeid=dnf_movie.DNF_movielabeid and dnf_movielabe.DNF_type Like #{dnfType} limit #{page},#{pageSize}
+    </select>
+
+    <!--人气，时间，点击量进行查询-->
+    <select id="select_typeTimeCick" resultType="map">
+             select * from dnf_movie where DNF_movielabeid not in(9) order by ${variable} desc limit 6
+    </select>
+    <!--随机查询多少条数据-->
+    <select id="selectNumData" resultType="map">
+        SELECT a.*,count(*) DNF_num FROM dnf_movie a,dnf_discuss b where a.DNF_discussid=b.DNF_discussid GROUP BY b.DNF_discussid  LIMIT #{page}
+    </select>
+
+    <!--电影播放-->
+    <select id="selectMoviePlay" resultType="map">
+         select dnf_user.DNF_username,dnf_movie.* from dnf_movie,dnf_discuss,dnf_user
+          where dnf_movie.DNF_discussid=dnf_discuss.DNF_discussid
+          and dnf_user.DNF_id=dnf_discuss.DNF_id
+          and DNF_movieid=#{variable} LIMIT 1
+    </select>
+
+    <!--评论-->
+    <select id="selectComment" resultType="map">
+          select dnf_user.DNF_username,dnf_movie.DNF_moviename,dnf_discuss.DNF_discusssr ,dnf_discuss.DNF_discusstime
+          from dnf_movie,dnf_discuss,dnf_user where dnf_movie.DNF_discussid=dnf_discuss.DNF_discussid
+          and dnf_user.DNF_id=dnf_discuss.DNF_id
+          and DNF_movieid=#{page}
+    </select>
+</mapper>
